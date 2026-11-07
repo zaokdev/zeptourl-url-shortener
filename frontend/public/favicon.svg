@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- ZeptoURL: a claim ticket with notches and a perforated stub. -->
+  <path
+    d="M5 7h7a3 3 0 0 0 6 0h9a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-9a3 3 0 0 0-6 0H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"
+    fill="#FFCB3D"
+    stroke="#22223B"
+    stroke-width="2"
+    stroke-linejoin="round"
+  />
+  <path d="M15 11.5v2.5M15 17v2.5" stroke="#22223B" stroke-width="2" stroke-linecap="round" />
+</svg>

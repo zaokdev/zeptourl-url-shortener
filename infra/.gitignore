@@ -1,0 +1,116 @@
+# =============================================================================
+# Terraform
+# =============================================================================
+
+# Local .terraform directories: provider binaries (large) and module cache
+**/.terraform/*
+.terraform/
+
+# State files: contain resource attributes, often including secrets
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Saved plan files can contain sensitive values
+*.tfplan
+*.plan
+
+# Variable files often hold secrets or account-specific values.
+# NOTE: .terraform.lock.hcl is intentionally NOT ignored; commit it.
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+!*.tfvars.json.example
+
+# Local override files and CLI configuration
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# =============================================================================
+# Secrets and credentials
+# =============================================================================
+
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.jks
+credentials
+credentials.csv
+*_rsa
+*_ed25519
+*.kubeconfig
+.aws/
+.ssh/
+
+# =============================================================================
+# Build and packaging artifacts
+# =============================================================================
+
+dist/
+build/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Language-specific caches and dependencies (for Lambda/Python/Node code)
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+coverage/
+
+# =============================================================================
+# Logs and temporary files
+# =============================================================================
+
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# =============================================================================
+# Editors and IDEs
+# =============================================================================
+
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# =============================================================================
+# OS-generated files
+# =============================================================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+.Trash-*

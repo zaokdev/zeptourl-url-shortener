@@ -1,0 +1,35 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "oxc"],
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  },
+  "overrides": [
+    {
+      // shadcn components export variants/helpers next to components by design.
+      "files": ["src/components/ui/**"],
+      "rules": {
+        "react/only-export-components": "off"
+      }
+    },
+    {
+      // Services layer: only src/services/ may import the non-UI Amplify packages.
+      // @aws-amplify/ui-react (Authenticator, useAuthenticator) is UI and stays allowed.
+      "files": ["src/components/**", "src/pages/**", "src/hooks/**", "src/app/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["aws-amplify", "aws-amplify/*"],
+                "message": "Import auth through '@/services/auth'. Only src/services/ may import aws-amplify."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

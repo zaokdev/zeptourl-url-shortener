@@ -1,0 +1,30 @@
+# Root-level safety net. Each subproject (frontend/, infra/) keeps its own
+# .gitignore with the detailed rules for its tooling; these apply everywhere.
+
+# Secrets and local config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.aws/
+
+# Terraform state and variables (never commit)
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+.terraform/
+
+# Build output
+node_modules/
+dist/
+.build/
+*.zip
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

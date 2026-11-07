@@ -1,0 +1,355 @@
+/* Cascade order (lowest first). Amplify's CSS sits above Tailwind's preflight, so
+   the Authenticator keeps its own styling, but below our components and
+   utilities, so its global resets (e.g. `button { font: inherit }`) can't
+   override Tailwind classes like font-medium. */
+@layer theme, base, amplify, components, utilities;
+
+@import "tailwindcss";
+@import "@aws-amplify/ui-react/styles.layer.css";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/instrument-sans/wdth.css"; /* weight 400–700 + width 75–100% */
+@import "@fontsource-variable/atkinson-hyperlegible-mono";
+
+/* Dark mode follows the OS setting: no toggle, no JavaScript, no flash. */
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
+@theme inline {
+  --font-sans: "Instrument Sans Variable", system-ui, sans-serif;
+  --font-mono: "Atkinson Hyperlegible Mono Variable", ui-monospace, monospace;
+  --font-heading: var(--font-sans);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Ticket paper: the same in both color modes. */
+  --color-ticket: var(--ticket);
+  --color-ticket-foreground: var(--ticket-foreground);
+  --color-ticket-muted: var(--ticket-muted);
+
+  /* Radius scale, pinned per step (not derived from --radius). */
+  --radius-sm: 3px; /* small accents */
+  --radius-md: 4px; /* menu items */
+  --radius-lg: 6px; /* buttons, inputs, tickets */
+  --radius-xl: 8px; /* cards, dialogs */
+  --radius-2xl: 10px; /* toasts, large containers */
+  --radius-3xl: 10px;
+  --radius-4xl: 9999px; /* badges */
+}
+
+/* Hairlines and ink outlines replace soft shadows. */
+@theme {
+  --shadow-xs: 0 0 #0000;
+}
+
+/* ---------------------------------------------------------------------------
+   Color tokens. Every text pair is contrast-checked against WCAG AA (4.5:1);
+   control outlines (--input) are at least 3:1 against their surfaces.
+   --------------------------------------------------------------------------- */
+:root {
+  color-scheme: light dark;
+  --radius: 6px;
+
+  /* Amplify's global `html { font-family: var(--amplify-fonts-default-*) }`
+     resolves to our font instead of its unloaded default (Inter). */
+  --amplify-fonts-default-variable: "Instrument Sans Variable", system-ui, sans-serif;
+  --amplify-fonts-default-static: "Instrument Sans Variable", system-ui, sans-serif;
+
+  --background: #f3f4f7; /* counter grey */
+  --foreground: #22223b; /* ink */
+  --card: #ffffff;
+  --card-foreground: #22223b;
+  --popover: #ffffff;
+  --popover-foreground: #22223b;
+  --primary: #22223b; /* white on ink 15.4:1 */
+  --primary-foreground: #ffffff;
+  --secondary: #e6e8ee; /* ink on it 12.6:1 */
+  --secondary-foreground: #22223b;
+  --muted: #e9ebf0;
+  --muted-foreground: #4a4d5e; /* 7.0:1 on muted, 8.35:1 on white */
+  --accent: #ffe9a8; /* yellow hover wash, ink on it 12.9:1 */
+  --accent-foreground: #22223b;
+  --destructive: #d62839; /* 4.97:1 on white, 4.52:1 on grey */
+  --border: #d9dce3; /* decorative dividers only */
+  --input: #7a7e91; /* 4.0:1 on white, 3.7:1 on grey */
+  --ring: #22223b;
+
+  --ticket: #ffcb3d;
+  --ticket-foreground: #22223b; /* 10.2:1 on yellow */
+  --ticket-muted: #4a4d5e; /* 5.5:1 on yellow */
+
+  /* The page color, kept separately because tickets re-declare --background. */
+  --page: var(--background);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a1a2e; /* derived from the brand ink, not a neutral near-black */
+    --foreground: #ecedf3; /* 14.6:1 on bg, 12.6:1 on card */
+    --card: #26263f;
+    --card-foreground: #ecedf3;
+    --popover: #26263f;
+    --popover-foreground: #ecedf3;
+    --primary: #ecedf3; /* yellow stays reserved for tickets */
+    --primary-foreground: #1a1a2e;
+    --secondary: #2e2e4a; /* foreground on it 11.2:1 */
+    --secondary-foreground: #ecedf3;
+    --muted: #2a2a44;
+    --muted-foreground: #a9abbe; /* 6.1:1 or better on every surface */
+    --accent: #3a3622; /* warm hover wash, foreground on it 10.4:1 */
+    --accent-foreground: #ecedf3;
+    --destructive: #ff6b78; /* 6.2:1 on bg, 5.3:1 on card */
+    --border: #34344f;
+    --input: #8a8da6; /* 5.2:1 on bg, 4.5:1 on card */
+    --ring: #ecedf3;
+  }
+}
+
+/* Tickets (and the Amplify login card) are paper: inside them every token is the
+   light ink set, so buttons, text and focus rings stay readable on yellow even
+   when the page is dark. */
+[data-slot="ticket"],
+[data-amplify-router] {
+  --background: var(--ticket);
+  --foreground: #22223b;
+  --card-foreground: #22223b;
+  --primary: #22223b;
+  --primary-foreground: #ffffff;
+  --muted: rgb(34 34 59 / 0.1);
+  --muted-foreground: #4a4d5e;
+  --accent: rgb(34 34 59 / 0.1);
+  --accent-foreground: #22223b;
+  --destructive: #22223b; /* red on yellow is only 3.3:1, so destructive actions stay ink here */
+  --border: #4a4d5e;
+  --input: #4a4d5e;
+  --ring: #22223b;
+}
+
+/* The login card shares the tickets' corner radius (Amplify's card is square). */
+[data-amplify-router] {
+  border-radius: var(--radius-xl);
+  overflow: clip;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* Tailwind v4's preflight gives buttons the default cursor; restore the pointer. */
+  :is(button, [role="button"], summary, select):not(:disabled, [aria-disabled="true"]) {
+    cursor: pointer;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Focus. A solid, offset outline on every action, unlayered so it beats the
+   components' outline-none / ring utilities. Field controls keep their ring.
+   --------------------------------------------------------------------------- */
+:is(
+    button,
+    a[href],
+    summary,
+    [role="button"],
+    [role="tab"],
+    [role="checkbox"],
+    [role="switch"],
+    [role="menuitem"]
+  ):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  --tw-ring-shadow: 0 0 #0000;
+}
+
+/* ---------------------------------------------------------------------------
+   Type scale. Utilities, not --text-* theme keys (cn() would treat those as
+   colors and drop one when combined with text-muted-foreground).
+   --------------------------------------------------------------------------- */
+@utility type-display {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  font-weight: 700;
+  font-stretch: 80%;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+@utility type-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-stretch: 90%;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+@utility type-lede {
+  font-size: 1.125rem;
+  line-height: 1.55;
+  max-width: 60ch;
+  text-wrap: pretty;
+}
+
+@utility type-code-lg {
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+}
+
+@utility type-code {
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ---------------------------------------------------------------------------
+   The ticket: stub | perforation | body, with half-circle notches cut into the
+   top and bottom edges where the perforation meets them.
+   Markup: <article data-slot="ticket" class="ticket">
+             <div class="ticket-stub">…</div><div class="ticket-body">…</div>
+           </article>
+   --------------------------------------------------------------------------- */
+@layer components {
+  .ticket {
+    --notch: 0.6rem; /* notch radius */
+    --edge: 1.5px; /* ink outline width */
+    --stub: 10.5rem; /* stub width (desktop): fits a 7-character code with room */
+    --stub-h: 4.25rem; /* stub height (stacked, mobile) */
+
+    position: relative;
+    /* Clip the notch arcs' outer halves: Chromium does not mask overflow. */
+    overflow: clip;
+    display: grid;
+    grid-template-columns: var(--stub) minmax(0, 1fr);
+    background-color: var(--ticket);
+    color: var(--ticket-foreground);
+    border-radius: var(--radius-lg);
+    /* Inset outline (not a border) so the mask and the notch arcs share one
+       coordinate system. */
+    box-shadow: inset 0 0 0 var(--edge) var(--ticket-foreground);
+    /* Two notches, one per half: each layer covers 51% so they overlap. */
+    mask:
+      radial-gradient(circle var(--notch) at var(--stub) 0, #0000 calc(100% - 0.5px), #000) top / 100% 51% no-repeat,
+      radial-gradient(circle var(--notch) at var(--stub) 100%, #0000 calc(100% - 0.5px), #000) bottom / 100% 51% no-repeat;
+  }
+
+  /* Ink arcs that outline the notches (the mask clips their outer halves). */
+  .ticket::before,
+  .ticket::after {
+    content: "";
+    position: absolute;
+    left: calc(var(--stub) - var(--notch) - var(--edge));
+    width: calc(2 * (var(--notch) + var(--edge)));
+    aspect-ratio: 1;
+    border: var(--edge) solid var(--ticket-foreground);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .ticket::before {
+    top: calc(-1 * (var(--notch) + var(--edge)));
+  }
+  .ticket::after {
+    bottom: calc(-1 * (var(--notch) + var(--edge)));
+  }
+
+  .ticket-stub {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    padding: 1rem 0.75rem;
+    border-right: 2px dashed var(--ticket-foreground);
+  }
+
+  .ticket-body {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem 0.875rem 1.25rem;
+  }
+
+  /* Narrow screens: the stub stacks above the body and the perforation turns
+     horizontal, with the notches on the left and right edges. */
+  @media (max-width: 479.98px) {
+    .ticket {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: var(--stub-h) auto;
+      mask:
+        radial-gradient(circle var(--notch) at 0 var(--stub-h), #0000 calc(100% - 0.5px), #000) left / 51% 100% no-repeat,
+        radial-gradient(circle var(--notch) at 100% var(--stub-h), #0000 calc(100% - 0.5px), #000) right / 51% 100% no-repeat;
+    }
+    .ticket::before,
+    .ticket::after {
+      top: calc(var(--stub-h) - var(--notch) - var(--edge));
+      bottom: auto;
+    }
+    .ticket::before {
+      left: calc(-1 * (var(--notch) + var(--edge)));
+    }
+    .ticket::after {
+      left: auto;
+      right: calc(-1 * (var(--notch) + var(--edge)));
+    }
+    .ticket-stub {
+      border-right: 0;
+      border-bottom: 2px dashed var(--ticket-foreground);
+      padding: 0.75rem 1rem;
+    }
+    .ticket-body {
+      padding: 0.875rem 1rem 1rem;
+    }
+  }
+
+  /* The one orchestrated motion: a new ticket "prints" out of the form. */
+  .ticket[data-printing] {
+    animation: ticket-print 280ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+}
+
+@keyframes ticket-print {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(-8px);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticket[data-printing] {
+    animation: none;
+  }
+}
