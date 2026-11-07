@@ -11,9 +11,7 @@ ZeptoURL turns long URLs into short codes and redirects anyone who opens one. It
 
 ## Live demo
 
-<!-- TODO: replace both links once deployed / once the GitHub short link exists -->
-
-- **App:** [TODO-cloudfront-domain.cloudfront.net](https://TODO-cloudfront-domain.cloudfront.net). Sign up with an email address; Cognito sends a verification code.
+- **App:** [https://dibsi8elps6e.cloudfront.net/](https://dibsi8elps6e.cloudfront.net/). Sign up with an email address; Cognito sends a verification code.
 - **Try a short link:** [TODO-short-link](https://TODO-short-link). It redirects right back to this repo.
 
 ## Architecture
@@ -161,6 +159,6 @@ aws s3 cp dist/production/index.html s3://<bucket_name>/index.html --cache-contr
 aws cloudfront create-invalidation --distribution-id <distribution_id> --paths "/index.html"
 ```
 
-The app is then live at `https://<cloudfront_domain>`.
+The app is then live at `https://dibsi8elps6e.cloudfront.net`.
 
-Thanks for reading. This project is [never](https://TODO-rickroll-short-link) going to let you down.
+Thanks for reading. This project is [never](https://vk2sq2cuz6.execute-api.us-east-1.amazonaws.com/KfNz8Ec) going to let you down.
