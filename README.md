@@ -12,7 +12,7 @@ ZeptoURL turns long URLs into short codes and redirects anyone who opens one. It
 ## Live demo
 
 - **App:** [https://dibsi8elps6e.cloudfront.net/](https://dibsi8elps6e.cloudfront.net/). Sign up with an email address; Cognito sends a verification code.
-- **Try a short link:** [TODO-short-link](https://TODO-short-link). It redirects right back to this repo.
+- **Try a short link:** [https://vk2sq2cuz6.execute-api.us-east-1.amazonaws.com/lLyoqca](https://vk2sq2cuz6.execute-api.us-east-1.amazonaws.com/lLyoqca). It redirects right back to this repo.
 
 ## Architecture
 
