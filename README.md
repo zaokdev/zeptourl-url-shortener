@@ -14,6 +14,8 @@ ZeptoURL turns long URLs into short codes and redirects anyone who opens one. It
 - **App:** [https://dibsi8elps6e.cloudfront.net/](https://dibsi8elps6e.cloudfront.net/). Sign up with an email address; Cognito sends a verification code.
 - **Try a short link:** [https://vk2sq2cuz6.execute-api.us-east-1.amazonaws.com/lLyoqca](https://vk2sq2cuz6.execute-api.us-east-1.amazonaws.com/lLyoqca). It redirects right back to this repo.
 
+![The ZeptoURL dashboard: a form to shorten a long link above a list of the user's short links, each with Copy, Open and Delete actions](docs/imgs/dashboard.png)
+
 ## Architecture
 
 ![Redirect flow: client → API Gateway → redirect Lambda → DynamoDB → 302](docs/diagrams/url_redirection_diagram.drawio.svg)
@@ -113,7 +115,9 @@ The S3 bucket blocks all public access. CloudFront reads it through **Origin Acc
 │       ├── auth/             # Cognito user pool and client
 │       ├── data/             # DynamoDB table and GSI
 │       └── site/             # S3 bucket, CloudFront, OAC
-└── docs/diagrams/
+└── docs/
+    ├── diagrams/             # architecture diagrams
+    └── imgs/                 # screenshots
 ```
 
 Terraform packages each `backend/lambdas/<name>` folder straight from this repo through a relative path. That's why backend and infra live together in one monorepo.
