@@ -101,6 +101,24 @@ resource "aws_apigatewayv2_stage" "default" {
   api_id      = aws_apigatewayv2_api.api_gateway.id
   name        = "$default"
   auto_deploy = true
+  default_route_settings {
+    throttling_burst_limit = 20
+    throttling_rate_limit  = 10
+  }
+
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_access.arn
+    format = jsonencode({
+      requestId = "$context.requestId"
+      time      = "$context.requestTime"
+      ip        = "$context.identity.sourceIp"
+      userAgent = "$context.identity.userAgent"
+      route     = "$context.routeKey"
+      status    = "$context.status"
+      user      = "$context.authorizer.claims.sub"
+      error     = "$context.integrationErrorMessage"
+    })
+  }
 }
 
 resource "aws_apigatewayv2_authorizer" "jwt" {
@@ -114,3 +132,11 @@ resource "aws_apigatewayv2_authorizer" "jwt" {
     audience = [var.client_id]
   }
 }
+
+# Cloudwatch log group
+
+resource "aws_cloudwatch_log_group" "api_access" {
+  name              = "/aws/apigateway/ZeptoURL-${var.env}"
+  retention_in_days = 14
+}
+
