@@ -12,7 +12,7 @@ resource "aws_s3_bucket_public_access_block" "this" {
 }
 
 resource "aws_cloudfront_origin_access_control" "this" {
-  name                              = "ZeptoURL-oac"
+  name                              = "ZeptoURL-oac-${var.env}"
   description                       = "Origin Access Control for ZeptoURL distribution"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"

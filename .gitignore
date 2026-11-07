@@ -8,6 +8,7 @@
 *.pem
 *.key
 .aws/
+**/.claude/settings.local.json
 
 # Terraform state and variables (never commit)
 *.tfstate
@@ -22,6 +23,7 @@ node_modules/
 dist/
 .build/
 *.zip
+coverage/
 
 # OS / editor
 .DS_Store
